@@ -10,6 +10,7 @@ import com.bankly.bankly.model.Transaction;
 import com.bankly.bankly.repository.AccountRepository;
 import com.bankly.bankly.repository.TransactionRepository;
 import com.bankly.bankly.service.AccountService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ public class TransactionController {
 
 
     @PostMapping("/deposit")
+    @Operation(summary = "Deposits amount on chosen account account")
     public ResponseEntity<String> deposit(@RequestBody DepositRequest request) {
         Account account = accountService.findByAccountNumber(request.getAccountNumber()).orElse(null);
 
@@ -48,6 +50,7 @@ public class TransactionController {
 
 
     @PostMapping("/withdraw")
+    @Operation(summary = "Removes amount from source account")
     public ResponseEntity<String> withdraw(@RequestBody WithdrawRequest request) {
         Account account = accountService.findByAccountNumber(request.getAccountNumber()).orElse(null);
 
@@ -68,6 +71,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transfer")
+    @Operation(summary = "Transfer amount between two accounts", description = "Withdraws amount from source account and deposits it in destination account")
     public ResponseEntity<String> transfer(@RequestBody TransferRequest request) {
         if (request.getAmount() == null || request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
             return ResponseEntity.badRequest().body("Invalid transfer amount");
@@ -105,6 +109,7 @@ public class TransactionController {
     }
 
     @PostMapping("/billpayment")
+    @Operation(summary = "Bill Payment for another institution", description = "Withdraws the amount from the user's account and logs the institution name and id it was sent to")
     public ResponseEntity<String> billPayment(@RequestBody BillPaymentRequest request) {
         if (request.getAmount() == null || request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
             return ResponseEntity.badRequest().body("Invalid payment amount");
