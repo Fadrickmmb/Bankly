@@ -98,6 +98,7 @@ public class TransactionController {
     }
 
     @GetMapping("/{accountNumber}")
+    @Operation(summary = "Retrieves the history of the account's transactions")
     public ResponseEntity<?> getTransactions(@PathVariable String accountNumber) {
         Account account = accountService.findByAccountNumber(accountNumber).orElse(null);
 
