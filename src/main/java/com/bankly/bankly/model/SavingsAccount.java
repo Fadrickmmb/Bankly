@@ -13,7 +13,8 @@ public class SavingsAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private BigDecimal balance;
+    @Column(nullable = false)
+    private BigDecimal balance = BigDecimal.ZERO;
 
     private LocalDateTime createdAt;
 
